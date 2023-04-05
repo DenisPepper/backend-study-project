@@ -1,0 +1,25 @@
+{
+  "name": "backend-study-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DenisPepper/backend-study-project.git"
+  },
+  "keywords": [
+    "node-js",
+    "rest-api",
+    "express"
+  ],
+  "author": "Denis Pepper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenisPepper/backend-study-project/issues"
+  },
+  "homepage": "https://github.com/DenisPepper/backend-study-project#readme"
+}
