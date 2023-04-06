@@ -14,4 +14,8 @@ app.get('/', (request, response) => {
   response.send('OK');
 });
 
+app.use((error, request, response, next) => {
+
+});
+
 app.listen(PORT);
