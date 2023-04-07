@@ -1,5 +1,5 @@
 import express from 'express';
-import {userRouter} from "./users/users.js";
+import {userRouter} from "users/users.ts";
 
 const PORT = 9090;
 const app = express();
