@@ -2,11 +2,12 @@
   "name": "backend-study-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.ts"
+    "start": "tsc | node dist/main.js",
+    "build": "tsc"
   },
-  "type": "module",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/DenisPepper/backend-study-project.git"
