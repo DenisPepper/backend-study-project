@@ -9,9 +9,11 @@ interface RoutType {
 
 export abstract class BaseController {
     readonly router: Router;
+    private logger: LoggerService
 
-    constructor(private logger: LoggerService) {
+    constructor(logger: LoggerService) {
         this.router = Router();
+        this.logger = logger;
     };
 
     public getRouter() {
