@@ -1,12 +1,13 @@
 import express, {Express} from 'express';
 import {Server} from 'http';
 import {DEFAULT_PORT, ErrorMessage as Message} from "./settings";
-import {userRouter} from "./user/user";
 import {LoggerService} from "./logger/logger.service";
+import {UserController} from "./controller/user.controller";
 
 interface Options {
     port?: number;
     logger?: LoggerService;
+    userController: UserController;
 }
 
 let instance: Boolean = false;
@@ -17,18 +18,19 @@ class App {
     private port: number;
     private server: Server;
     private logger: LoggerService;
+    private userController: UserController;
 
     constructor() {
         if (instance) {
             throw new Error(Message.OnCreateAnotherAppInstance);
         }
         this.app = express();
-        this.setPort();
+        this.setPort(DEFAULT_PORT);
         this.setLogger(new LoggerService());
         instance = true;
     };
 
-    private setPort(port: number = DEFAULT_PORT) {
+    private setPort(port: number) {
         this.port = port;
     }
 
@@ -40,18 +42,21 @@ class App {
         this.logger = logger;
     }
 
-    private useUserRouter() {
-        this.app.use('/user', userRouter);
+    private setUserController(controller: UserController) {
+        this.userController = controller;
     }
 
-    public init(options?: Options) {
-        if (options) {
-            const {port, logger} = options;
-            !!port && this.setPort(port);
-            !!logger && this.setLogger(logger);
-        }
+    private useRoutes() {
+        this.app.use('/user', this.userController.router);
+    }
+
+    public init(options: Options) {
+        const {port, logger, userController} = options;
+        !!port && this.setPort(port);
+        !!logger && this.setLogger(logger);
         this.setServer()
-        this.useUserRouter();
+        this.setUserController(userController);
+        this.useRoutes();
     }
 }
 
