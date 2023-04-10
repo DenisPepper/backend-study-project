@@ -1,5 +1,7 @@
-import {LoggerService} from "../logger/logger.service";
+import {LoggerType} from "../logger/logger.service";
 import {NextFunction, Request, Response, Router} from 'express';
+import {injectable} from "inversify";
+import 'reflect-metadata';
 
 interface RoutType {
     path: string;
@@ -7,11 +9,12 @@ interface RoutType {
     method: keyof Pick<Router, 'get' | 'post' | 'delete' | 'patch' | 'put'>;
 }
 
+@injectable()
 export abstract class BaseController {
     readonly router: Router;
-    private logger: LoggerService;
+    private logger: LoggerType;
 
-    protected constructor(logger: LoggerService) {
+    public constructor(logger: LoggerType) {
         this.router = Router();
         this.logger = logger;
     };

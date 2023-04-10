@@ -1,7 +1,16 @@
+import {injectable} from "inversify";
+import 'reflect-metadata';
 import {Logger, ILogObj} from 'tslog';
 import {LOGGER_TEMPLATE} from "../settings";
 
-export class LoggerService {
+export interface LoggerType {
+    info(...args: unknown[]): void;
+    error(...args: unknown[]): void;
+    warn(...args: unknown[]): void;
+}
+
+@injectable()
+export class LoggerService implements LoggerType {
     private logger: Logger<ILogObj>;
 
     constructor() {

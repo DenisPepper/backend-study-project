@@ -5,3 +5,10 @@ export const ErrorMessage = {
 export const DEFAULT_PORT = 9090;
 
 export const LOGGER_TEMPLATE = "{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t\n{{filePathWithLine}}{{name}}\t";
+
+export const AppKey = {
+    App: Symbol('App'),
+    Logger: Symbol('Logger'),
+    UserController: Symbol('UserController'),
+    ExceptionFilter: Symbol('ExceptionFilter'),
+} as const;
