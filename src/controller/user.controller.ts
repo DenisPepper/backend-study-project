@@ -6,8 +6,13 @@ import {inject, injectable} from "inversify";
 import 'reflect-metadata';
 import {AppKey} from "../settings";
 
+export interface UserControllerType {
+    login(req: Request, res: Response, next: NextFunction): void,
+    register(req: Request, res: Response, next: NextFunction): void
+}
+
 @injectable()
-export class UserController extends BaseController {
+export class UserController extends BaseController implements UserControllerType{
 
     constructor(@inject(AppKey.Logger) logger: LoggerType) {
         super(logger);

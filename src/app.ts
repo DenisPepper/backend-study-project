@@ -1,7 +1,7 @@
 import express, {Express} from 'express';
 import {Server} from 'http';
 import {AppKey, DEFAULT_PORT} from "./settings";
-import {LoggerService, LoggerType} from "./logger/logger.service";
+import {LoggerType} from "./logger/logger.service";
 import {UserController} from "./controller/user.controller";
 import {ExceptionFilterType} from "./error/exception-filter";
 import {inject, injectable} from "inversify";
@@ -40,7 +40,7 @@ export class App {
         this.app.use(errorHandler);
     };
 
-    public async init() {
+    public init() {
         this.setServer();
         this.useRoutes();
         this.useErrors();
