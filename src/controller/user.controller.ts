@@ -4,7 +4,10 @@ import {LoggerType} from "../logger/logger.service";
 import {HttpError} from "../error/http-error";
 import {inject, injectable} from "inversify";
 import 'reflect-metadata';
-import {AppKey} from "../settings";
+import {AppKey, ErrorMessage} from "../settings";
+import {UserLoginDto} from "../dto/user-login-dto";
+import {UserRegisterDto} from "../dto/user-register-dto";
+import {UserServiceType} from "../service/user/user";
 
 export interface UserControllerType {
     login(req: Request, res: Response, next: NextFunction): void,
@@ -14,7 +17,10 @@ export interface UserControllerType {
 @injectable()
 export class UserController extends BaseController implements UserControllerType{
 
-    constructor(@inject(AppKey.Logger) logger: LoggerType) {
+    constructor(
+        @inject(AppKey.Logger) logger: LoggerType,
+        @inject(AppKey.UserService) private service: UserServiceType
+    ) {
         super(logger);
         this.bindRoutes([
             {
@@ -30,12 +36,18 @@ export class UserController extends BaseController implements UserControllerType
         ])
     }
 
-    login(req: Request, res: Response, next: NextFunction) {
+    login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction) {
+        console.log(req.body);
         next(new HttpError(401, 'user not found', this.login.name));
     }
 
-    register(req: Request, res: Response, next: NextFunction) {
-        this.ok(res, 'register');
+    async register(req: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction) {
+        const {body} = req;
+        const user = await this.service.create(body);
+        if (!user) {
+            return next(new HttpError(422, ErrorMessage["422"]));
+        }
+        this.ok(res, {...user, pass: undefined});
     }
 
 }
