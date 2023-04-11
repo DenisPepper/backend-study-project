@@ -12,7 +12,7 @@ interface RoutType {
 @injectable()
 export abstract class BaseController {
     readonly router: Router;
-    private logger: LoggerType;
+    protected logger: LoggerType;
 
     public constructor(logger: LoggerType) {
         this.router = Router();
