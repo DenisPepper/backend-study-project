@@ -6,6 +6,7 @@ import {UserController} from "./controller/user.controller";
 import {ExceptionFilterType} from "./error/exception-filter";
 import {inject, injectable} from "inversify";
 import 'reflect-metadata';
+import {json} from "body-parser";
 
 @injectable()
 export class App {
@@ -31,6 +32,10 @@ export class App {
         this.server = this.app.listen(this.port, () => this.logger.info('ok'));
     };
 
+    private useMiddleware() {
+        this.app.use(json());
+    }
+
     private useRoutes() {
         this.app.use('/user', this.userController.router);
     };
@@ -42,6 +47,7 @@ export class App {
 
     public init() {
         this.setServer();
+        this.useMiddleware();
         this.useRoutes();
         this.useErrors();
     }
