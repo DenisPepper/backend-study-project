@@ -5,9 +5,11 @@ import {ExceptionFilter, ExceptionFilterType} from "./error/exception-filter";
 import {Container, ContainerModule} from "inversify";
 import {AppKey} from "./settings";
 import {UserService, UserServiceType} from "./service/user/user";
+import {Config, ConfigType} from "./config/config";
 
 const appModule = new ContainerModule((bind) => {
-    bind<LoggerType>(AppKey.Logger).to(LoggerService);
+    bind<LoggerType>(AppKey.Logger).to(LoggerService).inSingletonScope();
+    bind<ConfigType>(AppKey.Config).to(Config).inSingletonScope();
     bind<ExceptionFilterType>(AppKey.ExceptionFilter).to(ExceptionFilter);
     bind<UserControllerType>(AppKey.UserController).to(UserController);
     bind<UserServiceType>(AppKey.UserService).to(UserService);

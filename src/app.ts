@@ -7,6 +7,7 @@ import {ExceptionFilterType} from "./error/exception-filter";
 import {inject, injectable} from "inversify";
 import 'reflect-metadata';
 import {json} from "body-parser";
+import {ConfigType} from "./config/config";
 
 @injectable()
 export class App {
@@ -19,6 +20,7 @@ export class App {
         @inject(AppKey.Logger) private logger: LoggerType,
         @inject(AppKey.UserController) private userController: UserController,
         @inject(AppKey.ExceptionFilter) private exceptionFilter: ExceptionFilterType,
+        @inject (AppKey.Config) private config: ConfigType
     ) {
         this.app = express();
         this.setPort(DEFAULT_PORT);
