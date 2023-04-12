@@ -3,10 +3,15 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {injectable} from "inversify";
 import 'reflect-metadata';
 
+export interface MiddlewareType {
+    execute(req: Request, res: Response, next: NextFunction): void;
+}
+
 interface RoutType {
     path: string;
     handler(req: Request, res: Response, next: NextFunction): void;
     method: keyof Pick<Router, 'get' | 'post' | 'delete' | 'patch' | 'put'>;
+    middlewares?: MiddlewareType[];
 }
 
 @injectable()
@@ -39,8 +44,10 @@ export abstract class BaseController {
     protected bindRoutes(routes: RoutType[]) {
         routes.forEach((route) => {
             this.logger.info(`[${route.method}] ${route.path}`);
+            const middlewares = route.middlewares?.map((m) => m.execute.bind(m));
             const handler = route.handler.bind(this);
-            this.router[route.method](route.path, handler);
+            const pipeline = middlewares ? [...middlewares, handler] : handler;
+            this.router[route.method](route.path, pipeline);
         });
     };
 

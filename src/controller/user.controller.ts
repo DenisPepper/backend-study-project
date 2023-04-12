@@ -8,6 +8,7 @@ import {AppKey, ErrorMessage} from "../settings";
 import {UserLoginDto} from "../dto/user-login-dto";
 import {UserRegisterDto} from "../dto/user-register-dto";
 import {UserServiceType} from "../service/user/user";
+import {ValidateMiddleware} from "../middleware/validate-middleware/validate-middleware";
 
 export interface UserControllerType {
     login(req: Request, res: Response, next: NextFunction): void,
@@ -26,7 +27,8 @@ export class UserController extends BaseController implements UserControllerType
             {
                 path: '/register',
                 method: 'post',
-                handler: this.register
+                handler: this.register,
+                middlewares: [new ValidateMiddleware(UserRegisterDto)]
             },
             {
                 path: '/login',
